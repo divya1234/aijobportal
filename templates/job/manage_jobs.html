@@ -30,19 +30,9 @@
             </div>
         </div>
 
-        <div class="col-md-4 mb-3">
-            <div class="dashboard-card">
-                <h2>{{ active_jobs }}</h2>
-                <p>Active Jobs</p>
-            </div>
-        </div>
+       
 
-        <div class="col-md-4 mb-3">
-            <div class="dashboard-card">
-                <h2>{{ closed_jobs }}</h2>
-                <p>Closed Jobs</p>
-            </div>
-        </div>
+       
 
     </div>
 
@@ -108,7 +98,7 @@
                                 Applications
                             </a>
 
-                            <a href=""
+                            <a href="/jobs/delete_job/{{job.id}}"
                                class="btn btn-sm btn-danger"
                                onclick="return confirm('Delete this job?')">
                                 Delete

@@ -103,6 +103,12 @@ def add_notification(request):
             'category': categories
         }
     )
+
+def delete_job(request, job_id):
+    job = get_object_or_404(Job, id=job_id)
+    job.delete()
+    messages.success(request, "Job deleted successfully.")
+    return redirect('manage_jobs')
 def get_skills(request):
 
     category_id = request.GET.get('category_id')
