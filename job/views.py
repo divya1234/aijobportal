@@ -400,9 +400,36 @@ def application_detail(request, application_id):
         ),
         id=application_id
     )
+
+    applicant_skills = [
+        skill.name.lower()
+        for skill in application.applicant.skills.all()
+    ]
+
+    job_skills = [
+        skill.name.lower()
+        for skill in application.job.skills.all()
+    ]
+
+    matched = list(set(applicant_skills) & set(job_skills))
+    missing = list(set(job_skills) - set(applicant_skills))
+
+    score = 0
+
+    if job_skills:
+        score = round(
+            len(matched) / len(job_skills) * 100,
+            2
+        )
     skills = application.applicant.skills.all()
     
-    return render(request,'job/application_detail.html',{'application': application,'skills':skills})
+    return render(request, 'job/application_detail.html', {
+        'application': application,
+        'score': score,
+        'matched': matched,
+        'missing': missing,
+        'skills' : skills
+    })
 @jobseeker_required
 def my_applications(request):
     jobseeker = JobSeeker.objects.get(user=request.user)

@@ -54,11 +54,31 @@
                 {{ application.applied_at|date:"d M Y H:i" }}
             </p>
 
-            {% if application.cover_letter %}
-            <div class="mb-3">
-                <strong>Cover Letter:</strong>
-                <div class="border p-3 mt-2">
-                    {{ application.cover_letter }}
+             {% if score is not None %}
+            <div class="card mt-3">
+                <div class="card-body">
+
+                    <h4>Skills Analysis</h4>
+
+                    <p>
+                        <strong>Match Score:</strong>
+                        {{ score }}%
+                    </p>
+
+                    <h5>Matched Skills</h5>
+                    <ul>
+                        {% for skill in matched %}
+                            <li>{{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <h5>Missing Skills</h5>
+                    <ul>
+                        {% for skill in missing %}
+                            <li>{{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+
                 </div>
             </div>
             {% endif %}
