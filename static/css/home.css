@@ -1,0 +1,90 @@
+    .hero {
+      padding: 80px 0;
+      background: linear-gradient(to right, #eef2ff, #ffffff);
+    }
+
+    .hero h1 {
+      font-size: 55px;
+      font-weight: bold;
+      color: #111827;
+    }
+
+    .hero span {
+      color: #4f46e5;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: #6b7280;
+      margin-top: 20px;
+    }
+
+    .btn-main {
+      background: #4f46e5;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    .btn-main:hover {
+      background: #4338ca;
+      color: white;
+    }
+
+    .search-box {
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      margin-top: -40px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      transition: 0.3s;
+      height: 100%;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    }
+
+    .feature-icon {
+      font-size: 40px;
+      color: #4f46e5;
+      margin-bottom: 15px;
+    }
+
+    .job-card {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: 0.3s;
+      border: 1px solid #eee;
+    }
+
+    .job-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    }
+
+    .badge-ai {
+      background: #dcfce7;
+      color: #15803d;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+
+    .premium {
+      background: linear-gradient(to right, #4f46e5, #7c3aed);
+      color: white;
+      padding: 60px 0;
+      border-radius: 20px;
+    }/

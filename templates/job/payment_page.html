@@ -1,0 +1,35 @@
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<div class="container mt-5 text-center">
+
+    <h3>{{ job.title }}</h3>
+    <h5>{{ plan.name }} - ₹{{ plan.price }}</h5>
+
+    <button id="pay-btn" class="btn btn-success btn-lg">
+        Pay Now
+    </button>
+
+</div>
+
+<script>
+var options = {
+    "key": "{{ key }}",
+    "amount": "{{ payment.amount }}",
+    "currency": "INR",
+    "name": "Job Portal",
+    "description": "Featured Job Payment",
+    "order_id": "{{ payment.id }}",
+
+    "handler": function (response) {
+        window.location.href =
+        "/jobs/payment_success/?job_id={{ job.id }}&plan_id={{ plan.id }}";
+    }
+};
+
+var rzp = new Razorpay(options);
+
+document.getElementById('pay-btn').onclick = function(e){
+    rzp.open();
+    e.preventDefault();
+}
+</script>

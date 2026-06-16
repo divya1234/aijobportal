@@ -1,0 +1,110 @@
+.register-section{
+    padding:80px 0;
+    background:#eef2ff;
+    min-height:100vh;
+}
+
+.register-container{
+    width:900px;
+    margin:auto;
+    display:flex;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+.register-left{
+    width:45%;
+    padding:40px;
+    color:white;
+    background:linear-gradient(135deg,#4f46e5,#6d28d9);
+}
+
+.register-left h1{
+    font-size:48px;
+    margin-bottom:20px;
+}
+
+.register-left p{
+    line-height:1.8;
+}
+
+.feature{
+    display:flex;
+    align-items:center;
+    margin-top:30px;
+}
+
+.icon{
+    width:50px;
+    height:50px;
+    border-radius:12px;
+    background:rgba(255,255,255,0.15);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-right:15px;
+    font-size:22px;
+}
+
+.register-right{
+    width:55%;
+    background:white;
+    padding:40px;
+}
+
+.register-right h2{
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    color:#6b7280;
+    margin-bottom:30px;
+}
+
+.input-group{
+    margin-bottom:20px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.input-group input{
+    width:100%;
+    padding:14px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+}
+
+.register-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#4f46e5;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.register-btn:hover{
+    opacity:0.9;
+}
+
+.login-link,
+.extra-links{
+    text-align:center;
+    margin-top:15px;
+}
+
+.alert{
+    background:#fee2e2;
+    color:#dc2626;
+    padding:10px;
+    border-radius:8px;
+    margin-bottom:15px;
+}

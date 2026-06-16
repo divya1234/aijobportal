@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Company Login {% endblock %}
+
+{%  block css %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/complogin.css' %}">
+   {% endblock %}
+{% block content %}
+<section class="register-section">
+
+    <div class="register-container">
+
+        <!-- Left Side -->
+        <div class="register-left">
+
+            <h1>Welcome Back</h1>
+
+            <p>
+                Login to manage jobs, track applications,
+                and hire the best candidates.
+            </p>
+
+            <div class="feature">
+                <div class="icon">🏢</div>
+                <div>
+                    <h4>Manage Jobs</h4>
+                    <p>Create and update job postings easily</p>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="icon">📄</div>
+                <div>
+                    <h4>View Applications</h4>
+                    <p>Review and shortlist candidates quickly</p>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="icon">⚡</div>
+                <div>
+                    <h4>Recruitment</h4>
+                    <p>Find the right talent faster</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Side -->
+        <div class="register-right">
+
+            <h2>Login</h2>
+            <p class="subtitle">
+                Sign in to your account
+            </p>
+
+            <form method="post">
+                {% csrf_token %}
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email"
+                           name="email"
+                           placeholder="Enter email"
+                           required>
+                </div>
+
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password"
+                           name="password"
+                           placeholder="Enter password"
+                           required>
+                </div>
+
+                <button type="submit" class="register-btn">
+                    Login
+                </button>
+
+                <div class="extra-links">
+                    <a href="{% url 'password_reset' %}">
+                    Forgot Password?
+                </a>
+                </div>
+
+                <div class="login-link">
+                    Don't have an account?
+                    <a href="{% url 'company_register' %}">
+                        Register Company
+                    </a>
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

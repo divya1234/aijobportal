@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Job</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+    background:#f5f7fb;
+    font-family:Arial,sans-serif;
+}
+
+.edit-card{
+    max-width:900px;
+    margin:50px auto;
+    background:#fff;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+}
+
+h2{
+    margin-bottom:25px;
+    color:#4f46e5;
+    font-weight:bold;
+}
+
+.form-row{
+    display:flex;
+    gap:20px;
+    margin-bottom:20px;
+}
+
+.input-group{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+.input-group label{
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea{
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+textarea{
+    min-height:120px;
+}
+
+.skills-box{
+    border:1px solid #ddd;
+    padding:15px;
+    border-radius:8px;
+    margin-bottom:20px;
+}
+
+.submit-btn{
+    background:#4f46e5;
+    color:white;
+    border:none;
+    padding:12px 30px;
+    border-radius:8px;
+    font-weight:600;
+}
+
+.submit-btn:hover{
+    background:#4338ca;
+}
+
+</style>
+</head>
+<body>
+
+<div class="edit-card">
+
+    <h2>Edit Job Post</h2>
+<form method="post">
+    {% csrf_token %}
+
+    <div class="form-row">
+
+        <div class="input-group">
+            <label>Job Title</label>
+            <input type="text" name="title" value="{{ job.title }}">
+        </div>
+
+        <div class="input-group">
+            <label>Experience</label>
+            <select name="experience">
+                {% for value,label in job.EXPERIENCE_CHOICES %}
+                <option value="{{ value }}"
+                    {% if job.experience == value %}selected{% endif %}>
+                    {{ label }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+    </div>
+
+    <div class="form-row">
+
+        <div class="input-group">
+            <label>Salary Package</label>
+            <input type="number" name="salary" value="{{ job.salary }}">
+        </div>
+
+        <div class="input-group">
+            <label>Application Deadline</label>
+            <input type="date"
+                   name="application_deadline"
+                   value="{{ job.application_deadline|date:'Y-m-d' }}">
+        </div>
+
+    </div>
+
+    <div class="form-row">
+
+        <div class="input-group">
+            <label>Location</label>
+            <input type="text" name="location" value="{{ job.location }}">
+        </div>
+
+        <div class="input-group">
+            <label>Vacancies</label>
+            <input type="number" name="vacancies" value="{{ job.vacancies }}">
+        </div>
+
+    </div>
+
+    <div class="input-group mb-3">
+        <label>Job Description</label>
+        <textarea name="description">{{ job.description }}</textarea>
+    </div>
+
+    <div class="form-row">
+
+        <div class="input-group">
+            <label>Job Type</label>
+
+            <select name="job_type">
+                {% for value,label in job.JOB_TYPES %}
+                <option value="{{ value }}"
+                    {% if job.job_type == value %}selected{% endif %}>
+                    {{ label }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>Job Category</label>
+
+            <select name="category" id="category">
+                {% for category in categories %}
+                <option value="{{ category.id }}"
+                    {% if category.id == job.category.id %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+    </div>
+
+    <label class="mb-2 fw-bold">
+        Required Skills
+    </label>
+
+    <div class="skills-box" id="skills-container">
+
+        {% for skill in skills %}
+        <div class="form-check">
+
+            <input class="form-check-input"
+                   type="checkbox"
+                   name="skills"
+                   value="{{ skill.id }}"
+                   {% if skill in job.skills.all %}checked{% endif %}>
+
+            <label class="form-check-label">
+                {{ skill.name }}
+            </label>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+   
+    <button type="submit" class="submit-btn">
+        Update Job
+    </button>
+
+</form>
+</div>
+
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+$(document).ready(function(){
+
+    $('#category').change(function(){
+
+        var category_id = $(this).val();
+
+        $.ajax({
+            url: '/jobs/get-skills/',
+            type: 'GET',
+            data: {
+                category_id: category_id
+            },
+            success: function(response){
+
+                $('#skills-container').html('<p>select skills for job<p>');
+
+                $.each(response.skills, function(index, skill){
+
+                    $('#skills-container').append(`
+                        <div>
+                            <input type="checkbox"
+                                   name="skills"
+                                   value="${skill.id}"
+                                   id="skill_${skill.id}">
+                            <label for="skill_${skill.id}">
+                                ${skill.name}
+                            </label>
+                        </div>
+                    `);
+
+                });
+
+            }
+        });
+
+    });
+
+});
+</script>

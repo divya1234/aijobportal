@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} jobs {% endblock %}
+
+{%  block css %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/companies.css' %}">
+   {% endblock %}
+
+{% block content %}
+ <div class="container py-5">
+
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">Find Your Dream Job</h1>
+        <p class="text-muted">Job Portal</p>
+    </div>
+
+    <!-- Search -->
+     <form method="get" >
+    <div class="row mb-4">
+        <div class="col-md-5">
+            <input type="text" name="q" class="form-control search-box" placeholder="Search Jobs">
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100 search-box">
+                Search
+            </button>
+        </div>
+    </div>
+</form>
+    <!-- Job Cards -->
+    <div class="row g-4">
+    {% for job in jobs %}
+        <!-- Job 1 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card job-card p-3">
+
+                <div class="d-flex align-items-center mb-3">
+                    <img src="{{ job.company.logo.url }}" class="company-logo me-3">
+
+                    <div>
+                        <h5 class="mb-0">{{ job.title }}</h5>
+                        <small class="text-muted">{{ job.company }}</small>
+                    </div>
+                </div>
+
+                <p class="text-muted">{{ job.description }}</p>
+
+              
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-success fw-bold">{{ job.job_type }}</span>
+                    <span class="text-success fw-bold">₹{{ job.salary }} LPA</span>
+                </div>
+    <div class="d-flex gap-2 mt-3">
+         <a href="{% url 'job_details' job.id %}"
+       class="btn btn-info flex-fill">
+        View Details
+    </a>
+
+    {% if job.id in applied_jobs %}
+        <button class="btn btn-success flex-fill"  disabled>
+            Applied
+        </button>
+    {% else %}
+        <a href="{% url 'job_details' job.id %}"
+           class="btn btn-primary flex-fill">
+            Apply Now
+        </a>
+    {% endif %}
+</div>
+            </div>
+        </div>
+
+      {% endfor %}
+
+    </div>
+
+</div>
+
+ {% endblock %}

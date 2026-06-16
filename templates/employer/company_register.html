@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Company Register {% endblock %}
+
+{%  block css %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/comp_reg.css' %}">
+   {% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+    <h1>Create Company Account</h1>
+
+    <p>
+      Register your company and hire the best candidates using AI powered hiring
+    </p>
+
+  </section>
+
+  <!-- REGISTER -->
+
+  <section class="register-wrapper">
+
+    <div class="register-card">
+
+      <!-- LEFT -->
+
+      <div class="left-side">
+
+        <h2>Hire Smarter With AI</h2>
+
+        <p>
+          Create your company profile, post jobs and analyze resumes instantly
+          using our AI recruitment platform.
+        </p>
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            <i class="fa-solid fa-building"></i>
+          </div>
+
+          <div>
+            <h4>Company Profile</h4>
+            <p>Create and manage company details easily</p>
+          </div>
+
+        </div>
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            <i class="fa-solid fa-file"></i>
+          </div>
+
+          <div>
+            <h4>AI Resume Analysis</h4>
+            <p>Analyze and shortlist candidates instantly</p>
+          </div>
+
+        </div>
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            <i class="fa-solid fa-bolt"></i>
+          </div>
+
+          <div>
+            <h4>Post Jobs Fast</h4>
+            <p>Reach thousands of job seekers quickly</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT -->
+
+      <div class="right-side">
+      <div class="login-link">
+            <h3>Already have an account?
+            <a href="/login">Login</a></h3>
+          </div>
+        <hr>
+        <h2>Company Registration</h2>
+
+        <p class="sub">
+          Register your organization and start hiring today
+        </p>
+        {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+        <form method="post" enctype="multipart/form-data">
+         {% csrf_token %}
+          <div class="form-row">
+
+            <div class="input-group">
+              <label>Company Name</label>
+              <input type="text" name="company_name">
+            </div>
+
+            <div class="input-group">
+              <label>Industry</label>
+              <select name="industry">
+                <option value="">Select Industry</option>
+                {% for ind in industry %}
+                  <option value="{{ind.id}}">{{ind.name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+          </div>
+
+          <div class="form-row">
+
+            <div class="input-group">
+              <label>Email Address</label>
+              <input name="email" type="email">
+            </div>
+
+            <div class="input-group">
+              <label>Phone Number</label>
+              <input name="phone" type="text">
+            </div>
+            </div>
+             <div class="form-row">
+            <div class="input-group">
+              <label>City</label>
+              <input name="city" type="text">
+            </div>
+            <div class="input-group">
+              <label>State</label>
+              <input name="state" type="text">
+            </div>
+             
+
+          </div>
+          <div class="form-row">
+          <div class="input-group">
+              <label>Counrty</label>
+              <input name="country" type="text">
+            </div>
+            <div class="input-group">
+              <label>Website</label>
+              <input name="website" type="url">
+            </div>
+            </div>
+            <div class="form-row">
+          <div class="input-group">
+              <label>Facebook URL</label>
+              <input name="facebook_url" type="url">
+            </div>
+            <div class="input-group">
+              <label>LinkedIn URL</label>
+              <input name="linkedin_url" type="url">
+            </div>
+            
+           </div>
+            <div class="form-row">
+            <div class="input-group">
+              <label>Company Size</label>
+
+              <select name="company_size">
+                <option value="">Select Size</option>
+                <option value="1-10">1-10 Employees</option>
+                <option value="11-50">11-50 Employees</option>
+                <option value="51-200">51-200 Employees</option>
+                <option value="201-500">201-500 Employees</option>
+                <option value="501-1000">501-1000 Employees</option>
+                <option value="1001+">1001+ Employees</option>
+              </select>
+            </div>
+           <div class="input-group">
+              <label>Founded Year</label>
+              <input name="founded_year" type="text">
+            </div>
+          </div>
+          <div class="form-row">
+          <div class="input-group">
+            <label>Company Address</label>
+            <textarea name="address"></textarea>
+          </div>
+          <div class="input-group">
+            <label>Description</label>
+            <textarea name="description"></textarea>
+          </div>
+          </div>
+          <div class="form-row">
+
+            <div class="input-group">
+              <label>Password</label>
+              <input name="password" type="password">
+            </div>
+
+            <div class="input-group">
+              <label>Confirm Password</label>
+              <input name="c_password" type="password">
+            </div>
+
+          </div>
+          <div class="form-row">
+          <div class="input-group">
+            <label>Company Logo</label>
+            <input type="file" name="logo">
+          </div>
+          </div>
+          
+
+          <button type="submit" class="register-btn">
+            Register Company
+          </button>
+
+          
+        </form>
+
+      </div>
+
+    </div>
+
+  </section>
+{% endblock %}

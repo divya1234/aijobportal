@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Applications Management{% endblock %}
+
+
+{%  block css %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/companies.css' %}">
+   {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Job Applications</h2>
+        <span class="badge bg-primary fs-6">
+            Total Applications: {{ applications.count }}
+        </span>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            {% if applications %}
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Applicant</th>
+                            <th>Job Title</th>
+                            <th>Email</th>
+                            <th>Applied On</th>
+                            <th>Status</th>
+                            <th width="320">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    {% for app in applications %}
+                    <tr>
+
+                        <td>{{ forloop.counter }}</td>
+
+                        <td>
+                            <strong>
+                                {{ app.applicant.user.first_name }}
+                                {{ app.applicant.user.last_name }}
+                            </strong>
+                        </td>
+
+                        <td>
+                            {{ app.job.title }}
+                        </td>
+
+                        <td>
+                            {{ app.applicant.user.email }}
+                        </td>
+
+                        <td>
+                            {{ app.applied_at|date:"d M Y" }}
+                        </td>
+
+                        <td>
+
+                            {% if app.status == 'Pending' %}
+                                <span class="badge bg-warning text-dark">
+                                    Pending
+                                </span>
+
+                            {% elif app.status == 'Shortlisted' %}
+                                <span class="badge bg-info">
+                                    Shortlisted
+                                </span>
+
+                            {% elif app.status == 'Selected' %}
+                                <span class="badge bg-success">
+                                    Selected
+                                </span>
+
+                            {% elif app.status == 'Rejected' %}
+                                <span class="badge bg-danger">
+                                    Rejected
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+    {% if app.status == 'Pending' %}
+
+        <a href="{% url 'update_application_status' app.id 'Shortlisted' %}"
+           class="btn btn-info btn-sm">
+            Shortlist
+        </a>
+
+        <a href="{% url 'update_application_status' app.id 'Rejected' %}"
+           class="btn btn-danger btn-sm">
+            Reject
+        </a>
+
+    {% elif app.status == 'Shortlisted' %}
+
+        <a href="{% url 'update_application_status' app.id 'Selected' %}"
+           class="btn btn-success btn-sm">
+            Select
+        </a>
+
+        <a href="{% url 'update_application_status' app.id 'Rejected' %}"
+           class="btn btn-danger btn-sm">
+            Reject
+        </a>
+
+    {% elif app.status == 'Selected' %}
+
+        <span class="badge bg-success p-2">
+            Candidate Selected
+        </span>
+
+    {% elif app.status == 'Rejected' %}
+
+        <span class="badge bg-danger p-2">
+            Candidate Rejected
+        </span>
+
+    {% endif %}
+
+
+    <a href="{% url 'application_detail' app.id %}"
+   class="btn btn-info btn-sm">
+    View Details
+</a>
+</td>
+                    </tr>
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+
+            {% else %}
+
+            <div class="text-center py-5">
+
+                <img src="{% static 'images/no-data.png' %}"
+                     width="120"
+                     class="mb-3">
+
+                <h4>No Applications Yet</h4>
+
+                <p class="text-muted">
+                    Applications submitted by job seekers will appear here.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

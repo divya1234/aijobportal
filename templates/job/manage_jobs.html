@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manage Jobs{% endblock %}
+{%  block css %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/comp_dash.css' %}">
+   {% endblock %}
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Manage Jobs</h2>
+
+        <a href="/jobs/add_notification"
+           class="btn btn-primary">
+            + Post New Job
+        </a>
+    </div>
+
+    <!-- Statistics -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-4 mb-3">
+            <div class="dashboard-card">
+                <h2>{{ total_jobs }}</h2>
+                <p>Total Jobs</p>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="dashboard-card">
+                <h2>{{ active_jobs }}</h2>
+                <p>Active Jobs</p>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="dashboard-card">
+                <h2>{{ closed_jobs }}</h2>
+                <p>Closed Jobs</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Jobs Table -->
+
+    <div class="table-card">
+
+        <h4 class="mb-3">Posted Jobs</h4>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-primary">
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Category</th>
+                        <th>Location</th>
+                        <th>Job Type</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                        <th width="220">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for job in jobs %}
+
+                    <tr>
+
+                        <td>{{ job.title }}</td>
+
+                        <td>{{ job.category }}</td>
+
+                        <td>{{ job.location }}</td>
+
+                        <td>{{ job.job_type }}</td>
+
+                        <td>{{ job.application_deadline }}</td>
+
+                        <td>
+                            {% if job.is_active %}
+                                <span class="badge bg-success">
+                                    Active
+                                </span>
+                            {% else %}
+                                <span class="badge bg-danger">
+                                    Closed
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+
+                            <a href="/jobs/edit_job/{{job.id}}"
+                               class="btn btn-sm btn-warning">
+                                Edit
+                            </a>
+
+                            <a href=""
+                               class="btn btn-sm btn-info">
+                                Applications
+                            </a>
+
+                            <a href=""
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('Delete this job?')">
+                                Delete
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            No jobs posted yet.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

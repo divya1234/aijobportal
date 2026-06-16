@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Applications Management{% endblock %}
+
+
+{%  block css %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/companies.css' %}">
+   {% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="card shadow">
+        <div class="card-header">
+            <h3>Application Details</h3>
+        </div>
+
+        <div class="card-body">
+
+            <p><strong>Job:</strong> {{ application.job.title }}</p>
+
+            <p><strong>Name:</strong>
+                {{ application.applicant.user.first_name }} {{ application.applicant.user.last_name }} 
+            </p>
+
+            <p><strong>Email:</strong>
+                {{ application.applicant.user.email }}
+            </p>
+
+            <p><strong>Phone:</strong>
+                {{ application.applicant.phone }}
+            </p>
+            <p><strong>Education:</strong>
+                {{ application.applicant.qualification }}
+            </p>
+            <p><strong>Experience:</strong>
+                {{ application.applicant.experience }} Years
+            </p>
+           <p>Skills</p>
+            <ul>
+                {% for skill in application.applicant.skills.all %}
+                    <li>{{ skill.name }}</li>
+                {% empty %}
+                    <li>No skills added</li>
+                {% endfor %}
+            </ul>
+            <p><strong>Status:</strong>
+                {{ application.status }}
+            </p>
+
+            <p><strong>Applied On:</strong>
+                {{ application.applied_at|date:"d M Y H:i" }}
+            </p>
+
+            {% if application.cover_letter %}
+            <div class="mb-3">
+                <strong>Cover Letter:</strong>
+                <div class="border p-3 mt-2">
+                    {{ application.cover_letter }}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if application.applicant.resume %}
+                <a href="{{ application.applicant.resume.url }}"
+                   target="_blank"
+                   class="btn btn-primary">
+                    View Resume
+                </a>
+            {% endif %}
+
+
+            <a href="javascript:history.back()"
+               class="btn btn-secondary">
+                Back
+            </a>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

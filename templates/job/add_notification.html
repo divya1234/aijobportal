@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} jobs {% endblock %}
+
+{%  block css %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/add_not.css' %}">
+   {% endblock %}
+
+{% block content %}
+ <section class="hero">
+
+    <h1>Add Job Notification</h1>
+
+    <p>
+      Employers can publish job updates and hiring notifications instantly
+    </p>
+
+  </section>
+
+  <!-- FORM -->
+
+  <section class="form-wrapper">
+
+    <div class="form-card">
+
+      <!-- LEFT -->
+
+      <div class="left-side">
+
+        <h2>Post Hiring Notifications Easily</h2>
+
+        <p>
+          Create job notifications to attract skilled candidates and manage hiring efficiently.
+        </p>
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            <i class="fa-solid fa-bell"></i>
+          </div>
+
+          <div>
+            <h4>Instant Notifications</h4>
+            <p>Notify job seekers about openings immediately</p>
+          </div>
+
+        </div>
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            <i class="fa-solid fa-users"></i>
+          </div>
+
+          <div>
+            <h4>Reach More Candidates</h4>
+            <p>Share opportunities with thousands of applicants</p>
+          </div>
+
+        </div>
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            <i class="fa-solid fa-briefcase"></i>
+          </div>
+
+          <div>
+            <h4>Manage Job Posts</h4>
+            <p>Edit and update notifications anytime</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT -->
+
+      <div class="right-side">
+
+        <h2>Create Notification</h2>
+
+        <p class="sub">
+          Fill the details below to publish a new hiring notification
+        </p>
+        {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+        <form method="post">
+        {% csrf_token %}
+          <div class="form-row">
+
+            <div class="input-group">
+              <label>Job Title</label>
+              <input type="text" name="title" >
+            </div>
+                 <div class="input-group">
+            <label>Experience</label>
+            <select name="experience">
+                <option value="">Select Experience</option>
+                <option value="Fresher">Fresher</option>
+                <option value="0-1">0-1 Years</option>
+                <option value="1-3">1-3 Years</option>
+                <option value="3-5">3-5 Years</option>
+                <option value="5-10">5-10 Years</option>
+                <option value="10+">10+ Years</option>
+            </select>
+        </div>
+          </div>
+
+          <div class="form-row">
+            <div class="input-group">
+              <label>Salary Package</label>
+              <input type="text" name="salary">
+            </div>
+
+            <div class="input-group">
+              <label>Last Date</label>
+              <input type="date" name="application_deadline">
+            </div>
+
+          </div>
+          
+          <div class="form-row">
+            <div class="input-group">
+              <label>Location</label>
+              <input type="text" name="location">
+            </div>
+
+            <div class="input-group">
+              <label>Vacancies</label>
+              <input type="text" name="vacancies">
+            </div>
+
+          </div>
+          <div class="input-group">
+            <label>Job Description</label>
+
+            <textarea name="description"></textarea>
+          </div>
+
+          <div class="form-row">
+
+       
+
+            <div class="input-group">
+    <label>Job Type</label>
+    <select name="job_type">
+        <option value="">Select Job Type</option>
+        <option value="Full Time">Full Time</option>
+        <option value="Part Time">Part Time</option>
+        <option value="Contract">Contract</option>
+        <option value="Internship">Internship</option>
+        <option value="Temporary">Temporary</option>
+        <option value="Remote">Remote</option>
+    </select>
+</div>
+ <div class="input-group">
+              <label>Job Category</label>
+              <select name="category" id="category">
+                <option>Select Job Category</option>
+                {% for cat in category %}
+                  <option value="{{cat.id}}">{{cat.name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+          </div>
+
+           
+            <div class="form-row">
+            <div  id="skills-container">
+               
+                <!-- Skills checkboxes will appear here -->
+            </div>
+            </div>
+          <button class="submit-btn">
+            Publish Notification
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </section>
+{% endblock %}
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+$(document).ready(function(){
+
+    $('#category').change(function(){
+
+        var category_id = $(this).val();
+
+        $.ajax({
+            url: '/jobs/get-skills/',
+            type: 'GET',
+            data: {
+                category_id: category_id
+            },
+            success: function(response){
+
+                $('#skills-container').html('<p>select skills for job<p>');
+
+                $.each(response.skills, function(index, skill){
+
+                    $('#skills-container').append(`
+                        <div>
+                            <input type="checkbox"
+                                   name="skills"
+                                   value="${skill.id}"
+                                   id="skill_${skill.id}">
+                            <label for="skill_${skill.id}">
+                                ${skill.name}
+                            </label>
+                        </div>
+                    `);
+
+                });
+
+            }
+        });
+
+    });
+
+});
+</script>
+{% endblock %}
