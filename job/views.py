@@ -94,7 +94,7 @@ def add_notification(request):
             "Job notification published successfully."
         )
 
-        return redirect('upgrade_job',job.id)
+        return redirect('company_dashboard')
 
     return render(
         request,
