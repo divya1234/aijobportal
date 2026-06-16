@@ -129,3 +129,8 @@ STATICFILES_DIRS = [
 RAZORPAY_KEY_ID = "rzp_test_T1957ENYDw0qVm"
 RAZORPAY_KEY_SECRET = "1kx81L6YlHXeTbaLqL2Ra2lS"
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'divyafelix.pythonanywhere.com',
+]
