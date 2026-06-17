@@ -30,7 +30,8 @@ def joblist(request):
 
         jobs = Job.objects.filter(
             application_deadline__gte=today,
-            is_active=True
+            is_active=True,
+            company__is_verified=True
         ).order_by('-posted_date')
 
     if request.user.is_authenticated:
@@ -88,13 +89,7 @@ def add_notification(request):
 
         # save skills
         job.skills.set(skill_ids)
-
-        messages.success(
-            request,
-            "Job notification published successfully."
-        )
-
-        return redirect('company_dashboard')
+        return redirect('manage_jobs')
 
     return render(
         request,
@@ -178,7 +173,6 @@ def edit_job(request, job_id):
         'categories': categories,
         'skills': skills,
     })
-@jobseeker_required
 def job_details(request, id):
     job = get_object_or_404(Job, id=id)
 
@@ -468,6 +462,7 @@ def featured_jobs(request):
             application_deadline__gte=today,
             is_active=True,
             is_featured=True,
+            company__is_verified=True,
             featured_until__gte=timezone.now().date()
         ).order_by('-posted_date')
 
@@ -485,3 +480,57 @@ def featured_jobs(request):
         'jobs': jobs,
         'applied_jobs': applied_jobs,
     })
+
+def skill_list(request):
+    categories = JobCategory.objects.all()
+    skills = Skill.objects.select_related('category')
+
+    if request.method == "POST":
+        name = request.POST.get("name")
+        category_id = request.POST.get("category")
+
+        if name and category_id:
+            Skill.objects.create(
+                name=name,
+                category_id=category_id
+            )
+            return redirect('skill_list')
+
+    return render(request, "job/skills.html", {
+        "skills": skills,
+        "categories": categories
+    })
+
+def delete_skill(request, skill_id):
+    if not request.user.is_superuser:
+        return redirect('/login')
+
+    skill = get_object_or_404(Skill, id=skill_id)
+    skill.delete()
+
+    return redirect('/jobs/skill_list')
+
+def category_list(request):
+    if not request.user.is_superuser:
+        return redirect('/login')
+
+    categories = JobCategory.objects.all().order_by('name')
+
+    if request.method == "POST":
+        name = request.POST.get("name")
+
+        if name:
+            JobCategory.objects.create(name=name)
+            return redirect('category_list')
+
+    return render(request, "job/categories.html", {
+        "categories": categories
+    })
+def delete_category(request, category_id):
+    if not request.user.is_superuser:
+        return redirect('/login')
+
+    category = get_object_or_404(JobCategory, id=category_id)
+    category.delete()
+
+    return redirect('category_list')

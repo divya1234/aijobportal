@@ -15,7 +15,8 @@ def company_register(request):
     industries  = Industry.objects.all()
     if request.method == 'POST':
         company_name = request.POST.get('company_name')
-        industry = request.POST.get('industry')
+        industry_id = request.POST.get("industry")
+        industry = Industry.objects.get(id=industry_id)
         website = request.POST.get('website')
         facebook_url = request.POST.get('facebook_url')
         linkedin_url = request.POST.get('linkedin_url')

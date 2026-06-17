@@ -8,6 +8,7 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('change-password/', views.change_password, name='change_password'),
     path('', views.home, name='home'),
+    path('superadmin_dashboard/', views.superadmin_dashboard, name='superadmin_dashboard'),
     path(
         'password-reset/',
         auth_views.PasswordResetView.as_view(
@@ -39,6 +40,5 @@ urlpatterns = [
         ),
         name='password_reset_complete'
     ),
-    
-    # path('edit_profile/', views.edit_profile, name='edit_profile'),
+    path('toggle_company/<int:company_id>/', views.toggle_company_status, name='toggle_company'),
 ]

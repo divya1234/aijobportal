@@ -12,24 +12,23 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from aijobportal.decorators import company_required,jobseeker_required
+from django.shortcuts import get_object_or_404
+
 User = get_user_model()
 def user_login(request):
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
 
-        user = authenticate(
-            request,
-            username=email,
-            password=password
-        )
+        user = authenticate(request, username=email, password=password)        
 
         if user is None:
-            messages.error(request, "Invalid email or password")
+            messages.error(request, "Invalid username or password")
             return render(request, "accounts/login.html")
 
         login(request, user)
-        
+        if user is not None and user.is_superuser:
+            return redirect('/superadmin_dashboard')
         if user.user_type == "company":
             company = Company.objects.get(user=user)
             request.session['company_id'] = company.id
@@ -97,6 +96,7 @@ def home(request):
     applied_jobs = []
     featured_jobs = Job.objects.filter(
         is_featured=True,
+        company__is_verified=True,
         featured_until__gte=timezone.now().date()
     ).order_by('-id')[:6]
     if request.user.is_authenticated:
@@ -153,3 +153,30 @@ def change_password(request):
     return render(request, 'accounts/change_password.html', {
         'form': form
     })
+
+@login_required
+def superadmin_dashboard(request):
+    if not request.user.is_superuser:
+        return redirect('/login')
+    
+    companies = Company.objects.all()
+    context = {
+        "users_count": User.objects.count(),
+        "jobs_count": Job.objects.count(),
+        "applications_count": JobApplication.objects.count(),
+        "companies_count": Company.objects.count(),
+        "jobseekers_count": JobSeeker.objects.count(),
+        "companies":companies,
+    }
+    return render(request, "accounts/superadmin_dashboard.html", context)
+@login_required
+def toggle_company_status(request, company_id):
+    if not request.user.is_superuser:
+        return redirect('/login')
+
+    company = get_object_or_404(Company, id=company_id)
+
+    company.is_verified = not company.is_verified
+    company.save()
+
+    return redirect('/superadmin_dashboard/')

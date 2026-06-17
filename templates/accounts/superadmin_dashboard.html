@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Super Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+            margin: 0;
+        }
+
+        .sidebar {
+            width: 220px;
+            height: 100vh;
+            background: #111;
+            color: white;
+            position: fixed;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            color: #fff;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #bbb;
+            padding: 10px 0;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            color: white;
+        }
+
+        .main {
+            margin-left: 240px;
+            padding: 20px;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 200px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .card p {
+            font-size: 28px;
+            margin: 10px 0 0;
+            font-weight: bold;
+        }
+
+        .topbar {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>Super Admin</h2>
+    <a href="/">Home</a>
+    <a href="/admin/">Django Admin</a>
+    <a href="/jobs/categories/">Job Category</a>
+    <a href="/jobs/skill_list/">Skills</a>
+    <a href="/logout/">Logout</a>
+</div>
+
+<div class="main">
+
+    <div class="topbar">
+        <h3>Dashboard Overview</h3>
+        <span>Welcome, {{ request.user.username }}</span>
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>Total Users</h3>
+            <p>{{ users_count }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Companies</h3>
+            <p>{{ companies_count }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Job Seekers</h3>
+            <p>{{ jobseekers_count }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Jobs</h3>
+            <p>{{ jobs_count }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Applications</h3>
+            <p>{{ applications_count }}</p>
+        </div>
+
+    </div>
+<h2>Companies</h2>
+
+<table border="1" cellpadding="10" style="background:white;">
+    <tr>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    {% for company in companies %}
+    <tr>
+        <td>{{ company.company_name }}</td>
+
+        <td>
+            {% if company.is_verified == 1 %}
+                <span style="color:green;">Active</span>
+            {% else %}
+                <span style="color:red;">Inactive</span>
+            {% endif %}
+        </td>
+
+        <td>
+            {% if company.id %}
+    <a href="{% url 'toggle_company' company.id %}">
+        {% if company.is_verified == 1 %}Deactivate{% else %}Activate{% endif %}
+    </a>
+{% else %}
+    <span style="color:red;">Invalid Company</span>
+{% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+
+</body>
+</html>
