@@ -24,7 +24,7 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
-{% if request.session.company_id %}
+{% if request.user.company %}
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
@@ -44,7 +44,7 @@
         </li>
       </ul>
     </div>
-    {% elif request.session.jobseeker_id %}
+    {% elif request.user.jobseeker %}
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
@@ -99,7 +99,7 @@
       <div class="col-md-4">
         <h5>Quick Links</h5>
         <ul class="list-unstyled">
-          <li><a href="" class="text-white text-decoration-none">Home</a></li>
+          <li><a href="/" class="text-white text-decoration-none">Home</a></li>
           <li><a href="/jobs" class="text-white text-decoration-none">Jobs</a></li>
           <li><a href="/employer/" class="text-white text-decoration-none">Companies</a></li>
         </ul>
@@ -116,8 +116,8 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
 {% block scripts %}
 
 {% endblock %}
+</body>
+</html>

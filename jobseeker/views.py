@@ -37,7 +37,28 @@ def register(request):
         resume = request.FILES.get('resume')
 
         skill_ids = request.POST.getlist('skills')
+        required_fields = [
+            'fname',
+            'lname',
+            'email',
+            'phone',
+            'address',
+            'city',
+            'state',
+            'country',
+            'category',
+            'qualification',
+            'experience',
+            'skills'
+        ]
 
+        for field in required_fields:
+            if not request.POST.get(field):
+                messages.error(request, f"{field.replace('_', ' ').title()} is required.")
+                return render(
+                request,
+                'jobseeker/register.html',
+                {'category': categories})    
         # Password validation
         if password != cpassword:
             messages.error(request, "Passwords do not match")
@@ -87,8 +108,11 @@ def register(request):
             request,
             "Registration completed successfully."
         )
-
-        login(request, user)
+        request.session['jobseeker_id'] = jobseeker.id
+        user = authenticate(request, username=email, password=password)
+        if user is not None:
+            login(request, user)
+        
         return redirect('joblist')
         
     else:
